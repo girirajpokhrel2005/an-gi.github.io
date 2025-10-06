@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For You, Kalee</title>
+  <style>
+    /* ===== BEAUTIFUL EMBEDDED STYLES ===== */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600;700&display=swap');
+
+    :root {
+      --primary: #ff7aa2;
+      --dark: #5a4a5a;
+      --shadow: 0 8px 32px rgba(255, 122, 162, 0.25);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fff0f5, #ffe6ee);
+      color: var(--dark);
+      line-height: 1.7;
+      min-height: 100vh;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .page.active {
+      opacity: 1;
+      transform: translateY(0);
+      position: relative;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.9rem;
+      margin-bottom: 30px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .typing {
+      font-size: 1.3rem;
+      min-height: 120px;
+      margin: 25px auto;
+      padding: 0 15px;
+      font-family: 'Poppins', sans-serif;
+      color: var(--dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* ❤️ HEART-SHAPED PHOTO GALLERY (BIGGER) */
+    .heart-gallery {
+      position: relative;
+      width: 420px;
+      height: 360px;
+      margin: 40px auto;
+    }
+
+    .heart-gallery .photo {
+      position: absolute;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.35s ease;
+    }
+
+    .heart-gallery .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .heart-gallery .photo:hover {
+      transform: scale(1.12);
+      z-index: 20;
+      box-shadow: 0 12px 36px rgba(255, 122, 162, 0.45);
+    }
+
+    .heart-gallery .photo:hover img {
+      transform: scale(1.08);
+    }
+
+    /* ❤️ HEART LAYOUT - SCALED UP */
+    .p1  { top: 0px;   left: 52px;  width: 90px; height: 90px; }
+    .p2  { top: 0px;   right: 52px; width: 90px; height: 90px; }
+    .p3  { top: 26px;  left: 0px;   width: 90px; height: 90px; }
+    .p4  { top: 26px;  right: 0px;  width: 90px; height: 90px; }
+
+    .p5  { top: 78px;  left: 26px;  width: 85px; height: 85px; }
+    .p6  { top: 78px;  right: 26px; width: 85px; height: 85px; }
+    .p7  { top: 117px; left: 78px;  width: 78px; height: 78px; }
+    .p8  { top: 117px; right: 78px; width: 78px; height: 78px; }
+
+    .p9  { top: 182px; left: 104px; width: 72px; height: 72px; }
+    .p10 { top: 182px; right: 104px;width: 72px; height: 72px; }
+    .p11 { top: 234px; left: 143px; width: 65px; height: 65px; }
+    .p12 { top: 234px; right: 143px;width: 65px; height: 65px; }
+
+    /* ✨ EXTRA PHOTOS BELOW HEART */
+    .extra-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 30px;
+      max-width: 800px;
+    }
+
+    .extra-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.35s ease;
+    }
+
+    .extra-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .extra-photo:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 30px rgba(255, 122, 162, 0.4);
+    }
+
+    .extra-photo:hover img {
+      transform: scale(1.06);
+    }
+
+    /* Button */
+    .next-btn {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 14px 40px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .next-btn:hover {
+      transform: scale(1.05);
+      background: #ff5c91;
+    }
+
+    footer {
+      margin-top: 50px;
+      color: #888;
+      font-size: 0.95rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #audio-player {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 0;
+      height: 0;
+    }
+
+    @media (max-width: 600px) {
+      .heart-gallery {
+        transform: scale(0.78);
+      }
+      .extra-photo {
+        width: 140px;
+        height: 140px;
+      }
+      h1 { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: APOLOGY -->
+  <div class="page active" id="page1">
+    <h1>My Dearest Kalee</h1>
+    <div class="typing" id="text1"></div>
+    <div class="next-btn" onclick="nextPage(1)">See Our Moments →</div>
+  </div>
+
+  <!-- PAGE 2: MOMENTS (HEART + EXTRA PHOTOS) -->
+  <div class="page" id="page2">
+    <h1>Our Precious Moments</h1>
+    <div class="typing" id="text2"></div>
+    
+    <!-- ❤️ HEART-SHAPED PHOTO GALLERY -->
+    <div class="heart-gallery">
+      <div class="photo p1"><img src="1.jpg" alt="Kalee"></div>
+      <div class="photo p2"><img src="2.jpg" alt="Kalee"></div>
+      <div class="photo p3"><img src="3.jpg" alt="Kalee"></div>
+      <div class="photo p4"><img src="4.jpg" alt="Kalee"></div>
+      <div class="photo p5"><img src="5.jpg" alt="Kalee"></div>
+      <div class="photo p6"><img src="6.jpg" alt="Kalee"></div>
+      <div class="photo p7"><img src="7.jpg" alt="Kalee"></div>
+      <div class="photo p8"><img src="8.jpg" alt="Kalee"></div>
+      <div class="photo p9"><img src="9.jpg" alt="Kalee"></div>
+      <div class="photo p10"><img src="10.jpg" alt="Kalee"></div>
+      <div class="photo p11"><img src="11.jpg" alt="Kalee"></div>
+      <div class="photo p12"><img src="12.jpg" alt="Kalee"></div>
+    </div>
+
+    <!-- ✨ EXTRA PHOTOS BELOW HEART -->
+    <div class="extra-gallery">
+      <div class="extra-photo"><img src="13.jpg" alt="Kalee"></div>
+      <div class="extra-photo"><img src="14.jpg" alt="Kalee"></div>
+      <div class="extra-photo"><img src="15.jpg" alt="Kalee"></div>
+      <div class="extra-photo"><img src="16.jpg" alt="Kalee"></div>
+      <div class="extra-photo"><img src="17.jpg" alt="Kalee"></div>
+      <div class="extra-photo"><img src="18.jpg" alt="Kalee"></div>
+    </div>
+    
+    <div class="next-btn" onclick="nextPage(2)">My Promise →</div>
+  </div>
+
+  <!-- PAGE 3: PROMISE -->
+  <div class="page" id="page3">
+    <h1>My Promise to You, Kalee</h1>
+    <div class="typing" id="text3"></div>
+    <div class="next-btn" onclick="nextPage(3)">Forever Yours →</div>
+  </div>
+
+  <!-- PAGE 4: FOREVER -->
+  <div class="page" id="page4">
+    <h1>Forever Yours, Kalee</h1>
+    <div class="typing" id="text4"></div>
+    <div class="next-btn" onclick="nextPage(4)">A New Beginning →</div>
+  </div>
+
+  <!-- PAGE 5: FINAL -->
+  <div class="page" id="page5">
+    <h1>For You, My Kalee</h1>
+    <div class="typing" id="text5"></div>
+    <footer>
+      With all my love,<br>
+      Always yours 💖
+    </footer>
+  </div>
+
+  <!-- BACKGROUND MUSIC -->
+  <audio id="audio-player" preload="auto">
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const texts = {
+      text1: [
+        "Angila Shrestha — my Kalee — I’m writing this with tears in my eyes and regret in my heart.",
+        "I’ve been toxic. My jealousy made you feel caged. My overprotectiveness stole your peace.",
+        "You deserve love that feels like freedom… not fear.",
+        "And for hurting you — I am so deeply sorry."
+      ],
+      text2: [
+        "Angila, every moment with you feels like a blessing I don’t deserve.",
+        "From our first laugh to our quietest nights — you’ve filled my life with light.",
+        "I promise to protect these memories… not with control, but with trust."
+      ],
+      text3: [
+        "Angila, I promise to heal the parts of me that hurt you.",
+        "I will replace jealousy with trust.<br>I will give you space without suspicion.<br>I will love you like you’re free — because you are.",
+        "I’m working on myself — for you, for us, for the love we deserve."
+      ],
+      text4: [
+        "Angila Shrestha — my Kalee — no matter where life takes us,",
+        "you will always be the one who taught me what real love looks like.",
+        "I don’t ask for forgiveness today. I ask for a chance to show you — through actions — that I’ve changed.",
+        "Whenever you’re ready… I’ll be here."
+      ],
+      text5: [
+        "Angila, thank you for walking this far with me.",
+        "However you feel — I honor it.",
+        "And I’ll keep loving you… quietly, patiently, and without conditions."
+      ]
+    };
+
+    function typeText(elementId, lines) {
+      const element = document.getElementById(elementId);
+      let lineIndex = 0;
+      let charIndex = 0;
+      element.innerHTML = '';
+
+      function typeLine() {
+        if (lineIndex >= lines.length) return;
+
+        const line = lines[lineIndex];
+        let currentHTML = '';
+        for (let i = 0; i < lineIndex; i++) {
+          currentHTML += texts[elementId.replace('text', 'text')][i] + '<br><br>';
+        }
+        currentHTML += line.substring(0, charIndex);
+        element.innerHTML = currentHTML;
+
+        if (charIndex < line.length) {
+          charIndex++;
+          setTimeout(typeLine, 30);
+        } else {
+          lineIndex++;
+          charIndex = 0;
+          setTimeout(typeLine, 500);
+        }
+      }
+
+      typeLine();
+    }
+
+    let musicStarted = false;
+    const audio = document.getElementById('audio-player');
+
+    function startMusic() {
+      if (!musicStarted) {
+        audio.volume = 0.3;
+        audio.play().catch(() => console.log("Autoplay requires interaction"));
+        musicStarted = true;
+      }
+    }
+
+    function nextPage(current) {
+      startMusic();
+
+      const currentEl = document.getElementById(`page${current}`);
+      if (currentEl) currentEl.classList.remove('active');
+
+      const next = current + 1;
+      const nextEl = document.getElementById(`page${next}`);
+      if (!nextEl) return;
+
+      nextEl.classList.add('active');
+
+      if (next === 2) typeText('text2', texts.text2);
+      if (next === 3) typeText('text3', texts.text3);
+      if (next === 4) typeText('text4', texts.text4);
+      if (next === 5) typeText('text5', texts.text5);
+    }
+
+    window.addEventListener('load', () => {
+      typeText('text1', texts.text1);
+      document.body.addEventListener('click', startMusic, { once: true });
+    });
+  </script>
+</body>
+</html>
